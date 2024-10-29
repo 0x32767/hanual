@@ -21,7 +21,7 @@ def dump_tree(obj, depth=4, l=""):
         try:
             if canprint(obj) or sum(not canprint(o) for o in obj) == 0:
                 return repr(obj)
-        except TypeError as e:
+        except TypeError:
             pass
         # try to iterate as if obj were a list
         try:
@@ -34,7 +34,7 @@ def dump_tree(obj, depth=4, l=""):
                 + l
                 + "]"
             )
-        except TypeError as e:
+        except TypeError:
             # else, expand/recurse object attribs
             name = (
                 hasattr(obj, "__class__")

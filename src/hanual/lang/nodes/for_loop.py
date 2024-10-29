@@ -56,9 +56,7 @@ class ForLoop(BaseNode):
         yield from self._init.gen_code(self.IGNORE_RESULT)
         yield Response(loop_start)
 
-        yield from self._action.gen_code(
-            self.IGNORE_RESULT, self.INPLACE, imply_var=self._init.target
-        )
+        yield from self._action.gen_code(self.IGNORE_RESULT, self.INPLACE, imply_var=self._init.target)
         yield from self._body.gen_code(self.IGNORE_RESULT)
         yield from self._while.gen_code(
             self.CAPTURE_RESULT, imply_var=self._init.target

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING, Generator, Iterable, Literal, LiteralString
+from typing import Generator, Iterable, Literal, LiteralString
 
 from hanual.errors.error import HanualSyntaxError
 from .util.line_range import LineRange
@@ -14,9 +14,7 @@ def kw(reg: LiteralString) -> tuple[LiteralString, LiteralString]:
     The function us used with in the lexer. This function lets the user define keywords. For example, if you want to
     make a keyword called `let` you could use this function.
 
-    >>> ```
     >>> kw("let")
-    >>> ```
     """
     return reg, "kw"
 
@@ -27,16 +25,12 @@ def rx(reg: LiteralString) -> tuple[LiteralString, LiteralString]:
     The function us used with in the lexer. This function lets the user define patterns/tokens. For example, if you
     want to make a symbol, `|>` you could use this function with a regular expression that matches the token.
     
-    >>> ```
     >>> rx(r"\\|\\>")
-    >>> ```
     """
     return reg, "rx"
 
 
 class Lexer:
-    __slots__ = "last", "rules", "_rules", "_key_words"
-
     """A class that lazily performs lexical analysis on a piece of text.
 
     Raises:
@@ -52,7 +46,7 @@ class Lexer:
         self._key_words = []
         self.update_rules()
 
-    def update_rules(self, rules: Iterable[tuple[str, str]]=None):
+    def update_rules(self, rules: Iterable[tuple[str, str]] = None):
         """Categorises the class's rules and updates them.
 
         Args:
@@ -75,9 +69,9 @@ class Lexer:
                 )
 
     def tokenize(
-        self,
-        stream: Generator[str, None, None],
-        mode: Literal["exec"] | Literal["compile"],
+            self,
+            stream: Generator[str, None, None],
+            mode: Literal["exec"] | Literal["compile"],
     ) -> Generator[Token, None, None]:
         """Tokenizes the passed string into the tokens in the class.
 
@@ -97,19 +91,20 @@ class Lexer:
             yield from self._tokenize_str(tok_reg, line, line_no, mode=mode)
 
     def _tokenize_str(
-        self,
-        tok_reg: str,
-        text: str,
-        line_no: int,
-        mode: Literal["exec"] | Literal["compile"] | Literal["both"] = "both",
+            self,
+            tok_reg: str,
+            text: str,
+            line_no: int,
+            mode: Literal["exec"] | Literal["compile"] | Literal["both"] = "both",
     ) -> Generator[Token, None, None]:
-        """Does the behind-the-sceens tokenization of the text.
+        """Does the behind-the-screens tokenization of the text.
 
         Args:
             tok_reg (str): The regular expression of all language tokens.
-            text (str): The line of code to be analysed.
+            text (str): The line of code to be analyzed.
             line_no (int): The line number of the source code.
-            mode (Literal[&quot;exec&quot;] | Literal[&quot;compile&quot;] | Literal[&quot;both&quot;], optional): The compiler mode. Defaults to "both".
+            mode (Literal["exec"] | Literal["compile"] | Literal["both"], optional): The compiler mode.
+            Defaults to "both".
 
         Raises:
             Exception: When the current token type is None.

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Callable
 
 if TYPE_CHECKING:
     from types import FunctionType
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 class FunctionWrapper:
     def __init__(self, code: tuple[FunctionDefinition, FunctionType]) -> None:
-        self._func: function | None = None
+        self._func: Callable = lambda: None
         self._fn_node, self._co_code = code
 
     def _create_func(self):

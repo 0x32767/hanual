@@ -4,7 +4,6 @@ from abc import ABCMeta
 from typing import TYPE_CHECKING, Type
 
 from hanual.lang.util.line_range import LineRange
-from hanual.lang.util.node_utils import Intent
 from hanual.util.equal_list import ItemEqualList
 from hanual.util import ArgumentError
 
@@ -13,10 +12,10 @@ if TYPE_CHECKING:
 
 
 class _BaseNodeMeta(ABCMeta):
-    """A class that validates the atributes of all sub-classes
+    """A class that validates the attributes of all subclasses
 
     This class checks overrides the `__init__` and `gen_code` method. The
-    `__init__` method now validates the input, the arguments that where given to
+    `__init__` method now validates the input, the arguments that are where given to
     it and sets the `_lines` and `_line_range`. The `gen_code` method converts
     the input arguments to an `ItemEqualList` and adds a try/except statement to
     better describe any stack traces.
@@ -29,11 +28,11 @@ class _BaseNodeMeta(ABCMeta):
         instance.__init__ = cls.__override_init(instance, method=instance.__init__)
         instance.gen_code = cls.__overload_gen_code(instance, instance.gen_code)
 
-        for attr_name, attr_value in attrs.items():
-            if not isinstance(attr_value, Intent):
-                continue
-
-            attr_value.set_attrs(attr_name, 0)
+        # for attr_name, attr_value in attrs.items():
+        #     if not isinstance(attr_value, Intent):
+        #         continue
+        #
+        #     attr_value.set_attrs(attr_name, 0)
 
         return instance
 
@@ -114,7 +113,7 @@ class _BaseNodeMeta(ABCMeta):
                 f"{type(instance).__name__} failed to pass inspection", exceptions
             )
 
-    def __validate_input(cls, func, args, kwargs):
+    def __validate_input(cls, func, _, kwargs):
         exceptions = []
 
         if kwargs.get("lines"):

@@ -8,11 +8,12 @@ from hanual.util import Reply, Request, Response
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET, REQUEST_TYPE
 
 if TYPE_CHECKING:
-    from hanual.lang.nodes import BaseNode
+    from hanual.lang.nodes.base_node import BaseNode
 
 
 class Compiler:
-    def __init__(self, instructions: Optional[list]=None, constants: Optional[list[object]]=None, names: list[str]=None):
+    def __init__(self, instructions: Optional[list] = None, constants: Optional[list[object]] = None,
+                 names: list[str] = None):
         self._instructions = instructions or []
         self._constants: list[object] = constants or []
         self._names: list[str] = names or []

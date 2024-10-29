@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, override
 
 from bytecode import Instr, Label
 
 from hanual.lang.nodes.base_node import BaseNode
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET
 from hanual.lang.util.node_compile_options import IF_STATEMENT_KWARGS
-from hanual.util.equal_list import ItemEqualList
 from hanual.lang.util.node_utils import Intent
 from hanual.util import Response
 
@@ -31,8 +30,9 @@ class IfStatement(BaseNode):
     def block(self) -> CodeBlock:
         return self._block
 
+    @override
     def gen_code(self,
-                 intents: ItemEqualList[Intent],
+                 intents: Intent,
                  **options: IF_STATEMENT_KWARGS) -> GENCODE_RET:
 
         if (fj := options.get("end_jump", None)) is not None:

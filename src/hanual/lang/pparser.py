@@ -6,6 +6,7 @@ from .util.compileable_object import CompilableObject
 from .util.proxy import Proxy
 from .productions import DefaultProduction
 
+
 class _StackFrame[T: CompilableObject](NamedTuple):
     name: str
     value: T
@@ -211,7 +212,7 @@ class PParser:
                     _StackFrame[CompilableObject](
                         name=next_token.token_type,
                         value=next_token,
-                        lines=next_token.lines,
+                        lines=next_token.lines
                     )
                 )
 

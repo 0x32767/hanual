@@ -7,7 +7,7 @@ The hanual language is a compiled language that aims to provide full interopabil
 At the moment the language is not ready for production at all, to this point there have been no announced versions of the language, however I am planning to push the language forward. Below you can read a checklist, I want in the language before I am declaring a version `0.0.0`
 
  - [ ] Full support for all nodes
- - [ ] Propper Error messages
+ - [ ] Proper Error messages
  - [ ] Adding static analysis to the compiler
  - [ ] Adding hooks and improving the language API
  - [ ] Implementing errors and error messages

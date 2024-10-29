@@ -10,7 +10,7 @@ from .strong_field import StrongField
 from .strong_field_list import StrongFieldList
 
 if TYPE_CHECKING:
-    from hanual.lang.util.line_range import LineRange
+    ...
 
 
 class StructDefinition(BaseNode):
@@ -25,23 +25,16 @@ class StructDefinition(BaseNode):
         self,
         name: Token,
         fields: StrongFieldList | StrongField,
-        lines: str,
-        line_range: LineRange,
     ) -> None:
         # if [param:fields] is a StrongField, then we make one and add it to it
         if isinstance(fields, StrongField):
-            self._fields: StrongFieldList = StrongFieldList(
-                lines=lines, line_range=line_range
-            )
+            self._fields: StrongFieldList = StrongFieldList()
             self._fields.add_field(fields)
 
         else:
             self._fields: StrongFieldList = fields  # type: ignore
 
         self._name = name
-
-        self._lines = lines
-        self._line_range = line_range
 
     @property
     def raw_fields(self) -> StrongFieldList:

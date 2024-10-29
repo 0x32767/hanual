@@ -3,7 +3,6 @@ from __future__ import annotations
 from hanual.lang.builtin_lexer import HanualLexer
 from hanual.lang.builtin_parser import get_parser
 from hanual.lang.preprocess.preprocesser import Preprocessor
-from hanual.lang.util.dump_tree import dump_tree
 from hanual.wrappers.modle_wrapper import ModuleWrapper
 from hanual.wrappers.function_wrapper import FunctionWrapper
 

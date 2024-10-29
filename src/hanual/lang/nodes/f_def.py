@@ -7,8 +7,6 @@ from typing import TYPE_CHECKING
 from types import FunctionType
 
 from hanual.lang.nodes.base_node import BaseNode
-from hanual.lang.util.node_utils import Intent
-from hanual.util import Response
 from hanual.util import Reply, Request, Response
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET, REQUEST_TYPE
 
@@ -55,7 +53,7 @@ class FunctionDefinition(BaseNode):
     def gen_code(self, *intents: Intent, **options) -> GENCODE_RET:
         yield Response(Instr("RESUME", 0))
 
-        yield from self.inner.gen_code(*intents, **options)
+        yield from self.inner.gen_code()
 
         yield Response(Instr("LOAD_CONST", 0))
         yield Response(Instr("RETURN_CONST", 1))

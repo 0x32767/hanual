@@ -8,21 +8,17 @@ from .base_node import BaseNode
 
 if TYPE_CHECKING:
     from hanual.lang.lexer import Token
-    from hanual.lang.util.line_range import LineRange
 
 
-class ReturnStatement[V: (Token, BaseNode)](BaseNode):
+class ReturnStatement[V: (Token, BaseNode, None)](BaseNode):
     __slots__ = (
         "_value",
         "_lines",
         "_line_range",
     )
 
-    def __init__(self, value: V, lines: str, line_range: LineRange) -> None:
+    def __init__(self, value: V) -> None:
         self._value: V = value
-
-        self._line_range = line_range
-        self._lines = lines
 
     @property
     def value(self) -> V:

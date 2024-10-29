@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Generator, Optional
+from typing import Generator, Optional
 
 
 class Preprocessor:
@@ -97,7 +97,7 @@ class Preprocessor:
 
         self._definitions.append(name)
 
-    def _get_end(self, line: str) -> None:
+    def _get_end(self, _) -> None:
         # We will just reset it
         self._ignore_code = False
 

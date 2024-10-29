@@ -6,7 +6,6 @@ from typing import Self
 from hanual.lang.lexer import Token
 from hanual.lang.nodes.base_node import BaseNode
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET
-from hanual.lang.util.node_utils import Intent
 
 
 class Arguments[T: (BaseNode, Token)](BaseNode):
@@ -39,7 +38,7 @@ class Arguments[T: (BaseNode, Token)](BaseNode):
     def children(self) -> list[T]:
         return self._children
 
-    def gen_code(self, *intents: Intent, **options) -> GENCODE_RET:
+    def gen_code(self, intents, **options) -> GENCODE_RET:
         for arg in reversed(self._children):
             yield from arg.gen_code(self.CAPTURE_RESULT, Token.GET_VARIABLE)
 

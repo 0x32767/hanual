@@ -8,7 +8,6 @@ from .base_node import BaseNode
 
 if TYPE_CHECKING:
     from hanual.lang.lexer import Token
-    from hanual.lang.util.line_range import LineRange
 
     from .arguments import Arguments
     from .f_call import FunctionCall
@@ -17,12 +16,9 @@ if TYPE_CHECKING:
 class NewStruct(BaseNode):
     __slots__ = "_args", "_name", "_line_range", "_lines"
 
-    def __init__(self, call: FunctionCall, lines: str, line_range: LineRange) -> None:
+    def __init__(self, call: FunctionCall) -> None:
         self._args: Arguments = call.args
         self._name: Token = call.name
-
-        self._line_range = line_range
-        self._lines = lines
 
     @property
     def name(self) -> Token:

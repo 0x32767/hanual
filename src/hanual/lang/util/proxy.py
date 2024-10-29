@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Self, Type
+from warnings import warn
 
 from hanual.lang.productions import DefaultProduction
 from hanual.lang.util.compileable_object import CompilableObject
@@ -115,14 +116,17 @@ class Proxy[F: Callable]:
 
         func_args = self._fn.__annotations__.keys()
 
-        # TODO warn user if lines or line_range is a function argument, now passed through implicitly
-
         #
         # Types defined
         #
         if self._types != {}:
             try:
                 if "lines" in func_args and "line_range" in func_args:
+                    warn(
+                        f"The parameters: `lines` and `line_range` should be removed from function {self._fn.__name__}",
+                        category=DeprecationWarning
+                    )
+
                     res = self._fn(
                         self.prod(values),
                         self.types.get(" ".join(pattern), None) or self.types.get("*"),
