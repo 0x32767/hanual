@@ -114,6 +114,9 @@ class Proxy[F: Callable]:
         if not ln_range.end >= 1:
             ln_range.end = ln_range.start
 
+        assert isinstance(ln_range.end, int)
+        assert isinstance(ln_range.start, int)
+
         func_args = self._fn.__annotations__.keys()
 
         #
@@ -139,6 +142,7 @@ class Proxy[F: Callable]:
                         self.prod(values),
                         self.types.get(" ".join(pattern), None) or self.types.get("*"),
                     )
+
                     res.lines = lines
                     res.line_range = ln_range
 

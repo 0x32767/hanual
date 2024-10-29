@@ -8,8 +8,6 @@ from hanual.lang.nodes.base_node import BaseNode
 from hanual.lang.nodes.dot_chain import DotChain
 from hanual.lang.token import Token
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET
-from hanual.lang.util.node_utils import Intent
-from hanual.util.equal_list import ItemEqualList
 from hanual.util import Response
 
 if TYPE_CHECKING:
@@ -40,11 +38,11 @@ class FunctionCall[N: (Token, DotChain)](BaseNode):
     def args(self) -> Arguments:
         return self._args
 
-    def gen_code(self, intents: ItemEqualList[Intent], **options) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         yield Response(Instr("PUSH_NULL", location=self.get_location()))
 
         if isinstance(self._name, DotChain):
-            yield from self._name.gen_code()
+            yield from self._name.gen_code([])
 
         else:
             yield Response(
@@ -55,7 +53,7 @@ class FunctionCall[N: (Token, DotChain)](BaseNode):
                 )
             )
 
-        yield from self._args.gen_code()
+        yield from self._args.gen_code([])
 
         yield Response(Instr("CALL", len(self._args), location=self.get_location()))
 

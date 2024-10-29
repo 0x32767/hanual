@@ -295,7 +295,7 @@ def args_(ts: DefaultProduction[Token, Any]):
     "args args_",
     "s_getattr args_",
 )
-def args(ts: DefaultProduction[any, Arguments]):
+def args(ts: DefaultProduction[Any, Arguments]):
     return ts[1].add_child(ts[0])
 
 
@@ -335,7 +335,7 @@ def par_args(ts):
     types={"ID LPAR RPAR": 1, "ID par_args": 2},
 )
 def f_call(
-    ts: DefaultProduction[Token, Token, any, Token],
+    ts: DefaultProduction[Token, Token, Any, Token],
     mode: int,
 ):
     if mode == 1:
@@ -364,10 +364,8 @@ def f_call(
     types={"namespace_accessor LPAR RPAR": 1, "namespace_accessor par_args": 2},
 )
 def f_call(
-    ts: DefaultProduction[Token, Token, any, Token],
+    ts: DefaultProduction[Token, Token, Any, Token],
     mode: int,
-    lines: str = "",
-    line_range: int = 0,
 ):
     if mode == 1:
         return FunctionCall(
@@ -404,10 +402,8 @@ def f_call(
     types={"iwith_dot LPAR RPAR": 1, "iwith_dot par_args": 2},
 )
 def f_call(
-    ts: DefaultProduction[Token, Token, any, Token],
+    ts: DefaultProduction[Token, Token, Any, Token],
     mode: int,
-    lines: str = "",
-    line_range: int = 0,
 ):
     if mode == 1:
         # ( )

@@ -21,7 +21,7 @@ class LoopLoop(BaseNode):
     def inner(self) -> CodeBlock:
         return self._inner
 
-    def gen_code(self):
+    def gen_code(self, intents: list[str], **options):
         raise NotImplementedError
 
     def prepare(self) -> PREPARE_RET:

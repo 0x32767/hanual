@@ -22,7 +22,7 @@ class IterLoop[I: (Token, FunctionCall)](BaseNode):
         self._lines = lines
         self._line_range = line_range
 
-    def gen_code(self) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         raise NotImplementedError
 
     def prepare(self) -> PREPARE_RET:

@@ -12,8 +12,10 @@ if TYPE_CHECKING:
 
 
 class Compiler:
-    def __init__(self, instructions: Optional[list] = None, constants: Optional[list[object]] = None,
-                 names: list[str] = None):
+    def __init__(self,
+                 instructions: Optional[list] = None,
+                 constants: Optional[list[object]] = None,
+                 names: Optional[list[str]] = None):
         self._instructions = instructions or []
         self._constants: list[object] = constants or []
         self._names: list[str] = names or []
@@ -29,7 +31,7 @@ class Compiler:
             except StopIteration:
                 break
 
-            reply: Reply[list] | None = self._satisfy_prepare_request(req)
+            reply = self._satisfy_prepare_request(req)
 
     def _satisfy_prepare_request(self, request: Request) -> Reply[list] | None:
         req = iter(request.params)
@@ -57,7 +59,7 @@ class Compiler:
         return Reply(reply)
 
     def compile_body(self, nodes: BaseNode):
-        instructions: GENCODE_RET = nodes.gen_code()
+        instructions: GENCODE_RET = nodes.gen_code([])
         reply: Reply | None = None
 
         while True:

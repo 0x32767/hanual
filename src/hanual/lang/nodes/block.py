@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING
 
 from hanual.lang.nodes.base_node import BaseNode
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET
-from hanual.lang.util.node_utils import Intent
 
 if TYPE_CHECKING:
     ...
@@ -38,9 +37,9 @@ class CodeBlock(BaseNode):
 
         return self
 
-    def gen_code(self, intents: list[Intent], **options) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         for child in self._children:
-            yield from child.gen_code(self.IGNORE_RESULT)
+            yield from child.gen_code([self.IGNORE_RESULT])
 
     def prepare(self) -> PREPARE_RET:
         for child in self._children:

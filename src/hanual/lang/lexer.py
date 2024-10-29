@@ -46,7 +46,7 @@ class Lexer:
         self._key_words = []
         self.update_rules()
 
-    def update_rules(self, rules: Iterable[tuple[str, str]] = None):
+    def update_rules(self, rules: Iterable[tuple[str, str]] = ()):
         """Categorises the class's rules and updates them.
 
         Args:

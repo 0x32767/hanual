@@ -6,7 +6,6 @@ from hanual.lang.nodes.base_node import BaseNode
 from hanual.lang.nodes.else_statement import ElseStatement
 from hanual.util.protocalls import Response
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET
-from hanual.lang.util.node_utils import Intent
 from .elif_statement import ElifStatement
 from .if_statement import IfStatement
 from bytecode import Label
@@ -38,14 +37,14 @@ class IfChain(BaseNode):
     def statements(self) -> list[IfStatement | ElifStatement | ElseStatement]:
         return self._statements
 
-    def gen_code(self, *intents: Intent, **options) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         true_jump = Label()
 
         for stmt in self.statements:
             if isinstance(stmt, (IfStatement, ElifStatement)):
                 next_jump = Label()
 
-                yield from stmt.gen_code(true_jump=true_jump, false_jump=next_jump)
+                yield from stmt.gen_code([], true_jump=true_jump, false_jump=next_jump)
 
                 yield Response(next_jump)
 
@@ -53,7 +52,7 @@ class IfChain(BaseNode):
                 assert isinstance(
                     stmt, ElseStatement
                 ), f"Last statement must be an else go a {stmt}"
-                yield from stmt.gen_code()
+                yield from stmt.gen_code([])
 
         yield Response(true_jump)
 

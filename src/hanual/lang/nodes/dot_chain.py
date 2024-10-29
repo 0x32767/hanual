@@ -5,7 +5,6 @@ from typing import Self
 from hanual.lang.lexer import Token
 from hanual.lang.nodes.base_node import BaseNode
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET
-from hanual.lang.util.node_utils import Intent
 
 
 class DotChain(BaseNode):
@@ -30,7 +29,7 @@ class DotChain(BaseNode):
     def chain(self) -> list[Token]:
         return self._chain
 
-    def gen_code(self, *intents: Intent, **options) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         raise NotImplementedError
 
     def prepare(self) -> PREPARE_RET:

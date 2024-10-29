@@ -4,7 +4,6 @@ from abc import ABCMeta
 from typing import TYPE_CHECKING, Type
 
 from hanual.lang.util.line_range import LineRange, PositiveInfinity, NegativeInfinity
-from hanual.util.equal_list import ItemEqualList
 from hanual.util import ArgumentError
 
 if TYPE_CHECKING:
@@ -26,7 +25,6 @@ class _BaseNodeMeta(ABCMeta):
         name, _, attrs = args
 
         instance.__init__ = cls.__override_init(instance, method=instance.__init__)
-        instance.gen_code = cls.__overload_gen_code(instance, instance.gen_code)
 
         return instance
 
@@ -46,47 +44,30 @@ class _BaseNodeMeta(ABCMeta):
 
         return __init__
 
-    def __overload_gen_code(cls, method):
-        def decor(self, *args, **kwargs):
-            try:
-                yield from method(self, ItemEqualList(tuple(args)), **kwargs)
-
-            except Exception as e:
-                e.add_note(
-                    f"^ occurred in {method.__name__} (mod: {method.__module__})"
-                )
-                raise e
-
-        return decor
-
     def __validate_method(cls, instance: BaseNode, constructor):
         exceptions: list[Exception] = []
 
         # check class attributes
         if not ("_lines" in instance.__slots__):
-            err = AttributeError(
-                f"{type(instance).__name__!r} must have an attribute _lines"
+            exceptions.append(
+                AttributeError(f"{type(instance).__name__!r} must have an attribute _lines")
             )
-            exceptions.append(err)
 
         if not ("_line_range" in instance.__slots__):
-            err = AttributeError(
-                f"{type(instance).__name__!r} must have an attribute _line_range"
+            exceptions.append(
+                AttributeError(f"{type(instance).__name__!r} must have an attribute _line_range")
             )
-            exceptions.append(err)
 
         # check constructor parameters
         if "lines" in constructor.__annotations__:
-            err = ArgumentError(
-                f"{type(instance).__name__}.__init__ takes in deprecated param lines"
+            exceptions.append(
+                ArgumentError(f"{type(instance).__name__}.__init__ takes in deprecated param lines")
             )
-            exceptions.append(err)
 
         if "line_range" in constructor.__annotations__:
-            err = ArgumentError(
-                f"{type(instance).__name__}.__init__ takes in deprecated param line_range"
+            exceptions.append(
+                ArgumentError(f"{type(instance).__name__}.__init__ takes in deprecated param line_range")
             )
-            exceptions.append(err)
 
         # check getters and setters
         if not ("line_range" in dir(instance)):

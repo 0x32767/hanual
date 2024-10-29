@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from bytecode import Instr, Label, Bytecode
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self, Tuple
 from types import FunctionType
 
 from hanual.lang.nodes.base_node import BaseNode
@@ -13,7 +13,6 @@ from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET, REQUEST_TYPE
 
 if TYPE_CHECKING:
     from hanual.lang.lexer import Token
-    from hanual.lang.util.node_utils import Intent
 
     from .block import CodeBlock
     from .parameters import Parameters
@@ -50,24 +49,22 @@ class FunctionDefinition(BaseNode):
     def inner(self) -> CodeBlock:
         return self._inner
 
-    def gen_code(self, *intents: Intent, **options) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         yield Response(Instr("RESUME", 0))
 
-        yield from self.inner.gen_code()
+        yield from self.inner.gen_code([])
 
         yield Response(Instr("LOAD_CONST", 0))
         yield Response(Instr("RETURN_CONST", 1))
 
-    def gen_py_code(self):
-        pipe: GENCODE_RET = self.gen_code()
+    def gen_py_code(self) -> Tuple[Self, FunctionType]:
+        pipe: GENCODE_RET = self.gen_code([])
         reply: Reply | None = None
         instructions = []
 
         while True:
             try:
-                val: Response[Instr] | Response[Label] | Request[REQUEST_TYPE] = (
-                    pipe.send(reply)
-                )
+                val: Response[Instr] | Response[Label] | Request[REQUEST_TYPE] = pipe.send(reply)
 
             except StopIteration:
                 break

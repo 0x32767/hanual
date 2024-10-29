@@ -38,9 +38,9 @@ class Arguments[T: (BaseNode, Token)](BaseNode):
     def children(self) -> list[T]:
         return self._children
 
-    def gen_code(self, intents, **options) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         for arg in reversed(self._children):
-            yield from arg.gen_code(self.CAPTURE_RESULT, Token.GET_VARIABLE)
+            yield from arg.gen_code([self.CAPTURE_RESULT, Token.GET_VARIABLE])
 
     def prepare(self) -> PREPARE_RET:
         for arg in self._children:

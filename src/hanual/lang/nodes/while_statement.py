@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 from bytecode import Label, Instr
 
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET
-from hanual.lang.util.node_utils import Intent
 from .base_node import BaseNode
 
 from hanual.util.protocalls import Response
@@ -35,19 +34,19 @@ class WhileStatement(BaseNode):
     def body(self) -> CodeBlock:
         return self._body
 
-    def gen_code(self, intents: Intent, **options) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         loop_start = Label()
         loop_end = Label()
 
         yield Response(loop_start)
 
         # skip over the loop body if the comparison is false
-        yield from self._while.gen_code(self.CAPTURE_RESULT)
+        yield from self._while.gen_code([self.CAPTURE_RESULT])
         yield Response(Instr("POP_JUMP_IF_FALSE", loop_end))
         # compile the loop body
-        yield from self._body.gen_code(self.IGNORE_RESULT)
+        yield from self._body.gen_code([self.IGNORE_RESULT])
         # check the condition, jump forward (out the loop) if False, jump backward by default
-        yield from self._while.gen_code(self.CAPTURE_RESULT)
+        yield from self._while.gen_code([self.CAPTURE_RESULT])
         yield Response(Instr("POP_JUMP_IF_FALSE", loop_end))
         yield Response(Instr("JUMP_BACKWARD", loop_start))
 

@@ -29,7 +29,7 @@ class StrongField[T](BaseNode):
     def type(self) -> T:
         return self._type
 
-    def gen_code(self) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         raise NotImplementedError
 
     def prepare(self) -> PREPARE_RET:

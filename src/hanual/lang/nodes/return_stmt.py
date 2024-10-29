@@ -24,7 +24,7 @@ class ReturnStatement[V: (Token, BaseNode, None)](BaseNode):
     def value(self) -> V:
         return self._value
 
-    def gen_code(self) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         raise NotImplementedError
 
     def prepare(self) -> PREPARE_RET:

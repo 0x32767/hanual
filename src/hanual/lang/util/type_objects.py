@@ -6,8 +6,6 @@ from bytecode import Instr, Label
 
 if TYPE_CHECKING:
     from hanual.util.protocalls import Reply, Request, Response
-    from hanual.lang.util.node_utils import Intent
-    from hanual.util.equal_list import ItemEqualList
 
 
 type REQUEST_TYPE = int
@@ -20,5 +18,3 @@ type GENCODE_RET = Generator[
 type PREPARE_RET = Generator[
     Request[object], Reply[object] | None, None  # yield  # send type  # return type
 ]
-
-type GENCODE_INTENTS = ItemEqualList[Intent]

@@ -4,16 +4,14 @@ from bytecode.instr import Instr, InstrLocation
 
 from hanual.lang.util.compileable_object import CompilableObject
 from hanual.lang.util.line_range import LineRange
-from hanual.lang.util.node_utils import Intent
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET
-from hanual.util.equal_list import ItemEqualList
 from hanual.util.protocalls import Request, Response
 
 
 class Token(CompilableObject):
     """Representation of a token; used for lexical analysis and parsing."""
-    GET_VARIABLE = Intent("GET_VARIABLE")
-    SET_VARIABLE = Intent("SET_VARIABLE")
+    GET_VARIABLE = "GET_VARIABLE"
+    SET_VARIABLE = "SET_VARIABLE"
 
     def __init__(
         self,
@@ -62,9 +60,7 @@ class Token(CompilableObject):
         else:
             raise NotImplementedError
 
-    def gen_code(self, *intents, **options) -> GENCODE_RET:
-        intents = ItemEqualList(intents)
-
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         if self._token_type == "ID":
             if self.GET_VARIABLE in intents:
                 yield Response[Instr](
@@ -91,9 +87,12 @@ class Token(CompilableObject):
             raise NotImplementedError(self._token_type)
 
     def get_location(self) -> InstrLocation:
+        assert isinstance(self._line_range.start, int)
+        assert isinstance(self._line_range.end, int)
+
         return InstrLocation(
-            lineno=int(self._line_range.start),
-            end_lineno=int(self._line_range.end),
+            lineno=self._line_range.start,
+            end_lineno=self._line_range.end,
             col_offset=None,
             end_col_offset=None,
         )

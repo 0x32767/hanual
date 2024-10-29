@@ -22,7 +22,7 @@ class SGetattr[L: BaseNode, R: Token](BaseNode):
         self._left: R = right
         self._right: L = left
 
-    def gen_code(self) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         raise NotImplementedError
 
     def prepare(self) -> PREPARE_RET:

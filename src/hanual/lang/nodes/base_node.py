@@ -46,7 +46,7 @@ class BaseNode(CompilableObject, metaclass=_BaseNodeMeta):
         raise NotImplementedError
 
     @abstractmethod
-    def gen_code(self, intents: list[str], **options):
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         """Yields the byte code instructions to the compiler.
 
         The function takes options and a list of intents. The intents represent what the parent
@@ -80,8 +80,8 @@ class BaseNode(CompilableObject, metaclass=_BaseNodeMeta):
 
         # TODO add column offsets and change second `self._line_range.start` to the `self._line_range.end`
         return InstrLocation(
-            lineno=int(self._line_range.start),
-            end_lineno=int(self._line_range.start),
+            lineno=self._line_range.start,
+            end_lineno=self._line_range.start,
             col_offset=None,
             end_col_offset=None,
         )

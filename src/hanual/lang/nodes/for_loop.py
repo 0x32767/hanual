@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING
 
 from bytecode import Instr, Label
 
-from hanual.lang.util.node_utils import Intent
 from hanual.lang.nodes.base_node import BaseNode
 from hanual.lang.nodes.implicit_binop import ImplicitBinOp
 from hanual.lang.nodes.implicit_condition import ImplicitCondition
@@ -49,18 +48,16 @@ class ForLoop(BaseNode):
     def body(self) -> CodeBlock:
         return self._body
 
-    def gen_code(self, *intents: Intent, **options) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         loop_start = Label()
         loop_end = Label()
 
-        yield from self._init.gen_code(self.IGNORE_RESULT)
+        yield from self._init.gen_code([self.IGNORE_RESULT])
         yield Response(loop_start)
 
-        yield from self._action.gen_code(self.IGNORE_RESULT, self.INPLACE, imply_var=self._init.target)
-        yield from self._body.gen_code(self.IGNORE_RESULT)
-        yield from self._while.gen_code(
-            self.CAPTURE_RESULT, imply_var=self._init.target
-        )
+        yield from self._action.gen_code([self.IGNORE_RESULT, self.INPLACE], imply_var=self._init.target)
+        yield from self._body.gen_code([self.IGNORE_RESULT])
+        yield from self._while.gen_code([self.CAPTURE_RESULT], imply_var=self._init.target)
 
         yield Response(
             Instr("POP_JUMP_IF_FALSE", loop_end, location=self.get_location())

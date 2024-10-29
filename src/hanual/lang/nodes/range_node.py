@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Self
+from typing import TYPE_CHECKING, Optional
 from bytecode import Instr
-from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET, GENCODE_INTENTS
+from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET
 from hanual.lang.lexer import Token
 from hanual.util.protocalls import Response
 from .base_node import BaseNode
@@ -20,7 +20,7 @@ class RangeNode(BaseNode):
     )
 
     def __init__(
-        self: Self,
+        self,
         start: Optional[Token] = None,
         end: Optional[Token] = None,
     ) -> None:
@@ -35,7 +35,7 @@ class RangeNode(BaseNode):
     def end(self) -> Token | None:
         return self._end
 
-    def gen_code(self, intents: GENCODE_INTENTS, **options) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         yield Response(Instr("PUSH_NULL"))
         yield Response(Instr("LOAD_NAME", "range"))
 
@@ -50,8 +50,8 @@ class RangeNode(BaseNode):
                 raise NotImplementedError
 
             case Token(), Token():
-                yield from self._start.gen_code(self.CAPTURE_RESULT)
-                yield from self._end.gen_code(self.CAPTURE_RESULT)
+                yield from self._start.gen_code([self.CAPTURE_RESULT])
+                yield from self._end.gen_code([self.CAPTURE_RESULT])
 
             case _:
                 raise NotImplementedError(f"pattern {self._start!s} {self._end!s} was not implemented.")

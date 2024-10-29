@@ -28,7 +28,7 @@ class NewStruct(BaseNode):
     def args(self) -> Arguments:
         return self._args
 
-    def gen_code(self) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         raise NotImplementedError
 
     def prepare(self) -> PREPARE_RET:

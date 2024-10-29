@@ -8,7 +8,6 @@ from hanual.lang.lexer import Token
 from hanual.lang.nodes.base_node import BaseNode
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET
 from hanual.util import Response
-from hanual.lang.util.node_utils import Intent
 
 if TYPE_CHECKING:
     from hanual.lang.util.compileable_object import CompilableObject
@@ -65,7 +64,7 @@ class BinOpNode(BaseNode):
         """
         return self._op
 
-    def gen_code(self, *intents: Intent, **options) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         """Generates the instructions for the operation.
 
         The method takes not intentions or options.
@@ -76,8 +75,8 @@ class BinOpNode(BaseNode):
         Returns:
             GENCODE_RET: The instructions.
         """
-        yield from self._left.gen_code()
-        yield from self._right.gen_code()
+        yield from self._left.gen_code([])
+        yield from self._right.gen_code([])
 
         if self._op.value == "+":
             yield Response(

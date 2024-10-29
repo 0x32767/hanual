@@ -8,7 +8,6 @@ from hanual.lang.lexer import Token
 from hanual.lang.nodes.base_node import BaseNode
 from hanual.lang.nodes.f_call import FunctionCall
 from hanual.lang.util.type_objects import GENCODE_RET, PREPARE_RET
-from hanual.lang.util.node_utils import Intent
 from hanual.util import Response
 
 if TYPE_CHECKING:
@@ -35,11 +34,15 @@ class ImplicitCondition[OP: Token, V: (Token, FunctionCall)](BaseNode):
     def op(self) -> OP:
         return self._op
 
-    def gen_code(self, intents: Intent, **options) -> GENCODE_RET:
-        inferred = options.get("imply_var")
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
+        inferred: Token | None = options.get("imply_var")
+
+        if inferred is None:
+            raise KeyError("`imply_var` was not passed")
+
         # implement context here
-        yield from inferred.gen_code(self.CAPTURE_RESULT, Token.GET_VARIABLE)
-        yield from self._right.gen_code(self.CAPTURE_RESULT, Token.GET_VARIABLE)
+        yield from inferred.gen_code([self.CAPTURE_RESULT, Token.GET_VARIABLE])
+        yield from self._right.gen_code([self.CAPTURE_RESULT, Token.GET_VARIABLE])
 
         if self._op.value == "==":
             yield Response(Instr("COMPARE_OP", Compare.EQ))

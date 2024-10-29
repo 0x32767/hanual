@@ -2,25 +2,41 @@ from __future__ import annotations
 
 
 from dataclasses import dataclass
-from typing import Sequence, NoReturn
+from typing import Sequence, NoReturn, Literal, TypeGuard, Any
 
 
 class PositiveInfinity:
-    def __gt__(self, other) -> True:
+    def __gt__(self, other) -> Literal[True]:
         assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
         return True
 
-    def __lt__(self, other) -> False:
+    def __ge__(self, other) -> Literal[True]:
+        assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
+        return True
+
+    def __lt__(self, other) -> Literal[False]:
+        assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
+        return False
+
+    def __le__(self, other) -> Literal[False]:
         assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
         return False
 
 
 class NegativeInfinity:
-    def __gt__(self, other) -> True:
+    def __gt__(self, other) -> Literal[False]:
         assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
         return False
 
-    def __lt__(self, other) -> False:
+    def __ge__(self, other) -> Literal[False]:
+        assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
+        return False
+
+    def __lt__(self, other) -> Literal[True]:
+        assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
+        return True
+
+    def __le__(self, other) -> Literal[True]:
         assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
         return True
 

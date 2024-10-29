@@ -20,7 +20,7 @@ class ShoutNode(BaseNode):
     def __init__(self, shout_token: Token) -> None:
         self._st = shout_token
 
-    def gen_code(self) -> GENCODE_RET:
+    def gen_code(self, intents: list[str], **options) -> GENCODE_RET:
         raise NotImplementedError
 
     def prepare(self) -> PREPARE_RET:
