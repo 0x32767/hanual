@@ -1,8 +1,12 @@
-fn main(a, b, c) {
+fn main() {
+    let inp = input()
+
     for num of 1..5 {
         if num == 1 {
             print("ONE")
         }
-        print(num)
+        else {
+            print(num)
+        }
     }
 }

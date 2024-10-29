@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any, Callable, Optional
 
 if TYPE_CHECKING:
     from types import FunctionType
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 class FunctionWrapper:
     def __init__(self, code: tuple[FunctionDefinition, FunctionType]) -> None:
-        self._func: Callable = lambda: None
+        self._func: Optional[Callable] = None
         self._fn_node, self._co_code = code
 
     def _create_func(self):
@@ -20,11 +20,11 @@ class FunctionWrapper:
         _f.__name__ = self._fn_node.name.value
         self._func = _f
 
-    def __call__(self, *args: Any, **kwds: Any) -> Any:
+    def __call__(self, *args: Any, **kwargs: Any) -> Any:
         if self._func is None:
             self._create_func()
 
-        return self._func(*args, **kwds)
+        return self._func(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"[ FN {self._fn_node.name.value}\t{self._fn_node.parameters}\t~{hex(id(self)).capitalize()} ]"
