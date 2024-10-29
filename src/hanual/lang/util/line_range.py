@@ -2,13 +2,39 @@ from __future__ import annotations
 
 
 from dataclasses import dataclass
-from typing import Sequence
+from typing import Sequence, NoReturn
+
+
+class PositiveInfinity:
+    def __gt__(self, other) -> True:
+        assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
+        return True
+
+    def __lt__(self, other) -> False:
+        assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
+        return False
+
+
+class NegativeInfinity:
+    def __gt__(self, other) -> True:
+        assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
+        return False
+
+    def __lt__(self, other) -> False:
+        assert isinstance(other, int), f"Can't compare {type(self).__name__} to {type(other).__name__}"
+        return True
 
 
 @dataclass()
 class LineRange:
-    start: int
-    end: int
+    start: int | PositiveInfinity | NegativeInfinity
+    end: int | PositiveInfinity | NegativeInfinity
 
-    def to_range(self) -> Sequence[int]:
+    def to_range(self) -> Sequence[int] | NoReturn:
+        if not isinstance(self.start, int):
+            raise ValueError("starting value is not a number")
+
+        if not isinstance(self.end, int):
+            raise ValueError("ending value is not a number")
+
         return range(self.start, self.end+1)

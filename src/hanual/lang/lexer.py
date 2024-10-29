@@ -77,12 +77,11 @@ class Lexer:
 
         Args:
             stream (Generator[str, None, None]): The text to be tokenized (input should be lines of code).
-            mode (Literal[&quot;exec&quot;] | Literal[&quot;compile&quot;]): The compiler mode.
+            mode (Literal["exec"] | Literal["compile"]): The compiler mode.
 
         Yields:
             Generator[Token, None, None]: The pipeline of tokens.
         """
-        # TODO allow rules to ble cleared
         self.update_rules(self.last)
 
         tok_reg = "|".join("(?P<%s>%s)" % pair for pair in self._rules)

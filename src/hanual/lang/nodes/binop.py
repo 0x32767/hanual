@@ -31,8 +31,8 @@ class BinOpNode(BaseNode):
 
         Args:
             op (Token): The operator as a token, e.g `+`, `-`.
-            left (CompilableObject): The left operator in operang.
-            right (CompilableObject): The right operator in operang.
+            left (CompilableObject): The left operator in operand.
+            right (CompilableObject): The right operator in operand.
         """
         self._right: CompilableObject = right
         self._left: CompilableObject = left
@@ -40,19 +40,19 @@ class BinOpNode(BaseNode):
 
     @property
     def left(self) -> CompilableObject:
-        """The left operang.
+        """The left operand.
 
         Returns:
-            CompilableObject: The left operang.
+            CompilableObject: The left operand.
         """
         return self._left
 
     @property
     def right(self) -> CompilableObject:
-        """The right operang.
+        """The right operand.
 
         Returns:
-            CompilableObject: The right operang.
+            CompilableObject: The right operand.
         """
         return self._right
 
@@ -66,7 +66,7 @@ class BinOpNode(BaseNode):
         return self._op
 
     def gen_code(self, *intents: Intent, **options) -> GENCODE_RET:
-        """Genorates the the instructions for the operation.
+        """Generates the instructions for the operation.
 
         The method takes not intentions or options.
 

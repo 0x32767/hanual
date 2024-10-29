@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABCMeta
 from typing import TYPE_CHECKING, Type
 
-from hanual.lang.util.line_range import LineRange
+from hanual.lang.util.line_range import LineRange, PositiveInfinity, NegativeInfinity
 from hanual.util.equal_list import ItemEqualList
 from hanual.util import ArgumentError
 
@@ -28,12 +28,6 @@ class _BaseNodeMeta(ABCMeta):
         instance.__init__ = cls.__override_init(instance, method=instance.__init__)
         instance.gen_code = cls.__overload_gen_code(instance, instance.gen_code)
 
-        # for attr_name, attr_value in attrs.items():
-        #     if not isinstance(attr_value, Intent):
-        #         continue
-        #
-        #     attr_value.set_attrs(attr_name, 0)
-
         return instance
 
     def __override_init(cls, method):
@@ -46,7 +40,7 @@ class _BaseNodeMeta(ABCMeta):
             cls.__validate_method(self, method)
 
             self._lines = ""
-            self._line_range = LineRange(start=float("inf"), end=float("-inf"))
+            self._line_range = LineRange(start=PositiveInfinity(), end=NegativeInfinity())
 
             method(self, *args, **kwargs)
 

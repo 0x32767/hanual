@@ -46,11 +46,11 @@ class BaseNode(CompilableObject, metaclass=_BaseNodeMeta):
         raise NotImplementedError
 
     @abstractmethod
-    def gen_code(self, *intents, **options):
+    def gen_code(self, intents: list[str], **options):
         """Yields the byte code instructions to the compiler.
 
         The function takes options and a list of intents. The intents represent what the parent
-        node intends to do. This is for information that should be propogated up the AST during
+        node intends to do. This is for information that should be propagated up the AST during
         compilation. The options should be information more specific towards the child node.
 
         Raises:
@@ -97,8 +97,7 @@ class BaseNode(CompilableObject, metaclass=_BaseNodeMeta):
             str: The lines that contain the node.
         """
         if self._lines is None:
-            # TODO make the exception a value error
-            raise Exception("self._lines is None (was never set)")
+            raise ValueError("self._lines is None (was never set)")
 
         return self._lines
 
@@ -108,8 +107,8 @@ class BaseNode(CompilableObject, metaclass=_BaseNodeMeta):
 
         This method should not be used in the code base.
         """
-        # TODO make the exception a value error
-        assert isinstance(new, str), "new value for lines must be a str"
+        if not isinstance(new, str):
+            raise ValueError("new value for lines must be a str")
         self._lines = new
 
     @property
@@ -123,8 +122,7 @@ class BaseNode(CompilableObject, metaclass=_BaseNodeMeta):
             LineRange: The location of the code as a line range.
         """
         if self._line_range is None:
-            # TODO make the exception a value error
-            raise Exception("self._line_range is none (was never set)")
+            raise ValueError("self._line_range is none (was never set)")
 
         return self._line_range
 

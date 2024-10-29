@@ -5,7 +5,7 @@ from warnings import warn
 
 from hanual.lang.productions import DefaultProduction
 from hanual.lang.util.compileable_object import CompilableObject
-from hanual.lang.util.line_range import LineRange
+from hanual.lang.util.line_range import LineRange, PositiveInfinity, NegativeInfinity
 
 if TYPE_CHECKING:
     from hanual.lang.pparser import _StackFrame
@@ -58,7 +58,7 @@ class Proxy[F: Callable]:
         return self._fn
 
     def call(self: Proxy, args: list[_StackFrame]) -> CompilableObject:
-        ln_range = LineRange(start=float("inf"), end=float("-inf"))
+        ln_range = LineRange(start=PositiveInfinity(), end=NegativeInfinity())
         pattern = []
         values = []
         lines = ""

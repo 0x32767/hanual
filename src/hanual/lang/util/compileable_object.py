@@ -15,7 +15,7 @@ class CompilableObject:
     def prepare(self) -> PREPARE_RET:
         raise NotImplementedError
 
-    def gen_code(self, **options):
+    def gen_code(self, intents: list[str], **options):
         raise NotImplementedError
 
     def get_location(self) -> InstrLocation:

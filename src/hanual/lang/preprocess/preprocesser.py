@@ -61,7 +61,7 @@ class Preprocessor:
         # if mappings is None:
         #    mappings = {}
 
-        mappings: dict[str, str] = {  # TODO: make this modifiable too
+        mappings: dict[str, str] = {
             "def": "def",
             "end": "end",
             "nif": "nif",
